@@ -106,21 +106,6 @@ curl -s http://localhost:8080/actuator/circuitbreakers | jq
 curl -s http://localhost:8080/actuator/circuitbreakerevents | jq
 ```
 
-## Publishing this to GitHub
-
-```bash
-cd resilience4j-payment-circuitbreaker-demo
-git init
-git add .
-git commit -m "Circuit breaker demo: payment gateway resilience with Resilience4j"
-git branch -M main
-git remote add origin https://github.com/<your-github-username>/resilience4j-payment-circuitbreaker-demo.git
-git push -u origin main
-```
-
-Then update the placeholder URL on slides 10 and 12 of the presentation to
-your real repo link.
-
 ## Why these config values (`application.yml`)
 
 These map directly to the scenario in the presentation:
