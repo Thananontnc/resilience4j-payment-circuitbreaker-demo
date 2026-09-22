@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 10          # small on purpose — makes it easy to see a slow gateway exhaust the pool
+
+spring:
+  application:
+    name: resilience4j-payment-circuitbreaker-demo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,circuitbreakers,circuitbreakerevents
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentService:
+        failureRateThreshold: 50          # trip once 50% of recent calls fail
+        slowCallDurationThreshold: 3s     # a call slower than this counts as "slow"
+        slowCallRateThreshold: 50
+        slidingWindowType: TIME_BASED
+        slidingWindowSize: 10             # look at the last 10 seconds of calls
+        minimumNumberOfCalls: 5           # need at least 5 calls before the rate matters
+        waitDurationInOpenState: 30s      # stay OPEN for 30s, then try a trial call
+        permittedNumberOfCallsInHalfOpenState: 3
+        registerHealthIndicator: true
+
+logging:
+  level:
+    com.example.paymentdemo: INFO
